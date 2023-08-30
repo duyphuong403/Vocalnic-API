@@ -1,0 +1,5 @@
+{
+  "plugins": [],
+  "parser": "@typescript-eslint/parser",
+  "rules": {}
+}
