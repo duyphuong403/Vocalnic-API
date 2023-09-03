@@ -1,19 +1,18 @@
+import cors from "cors";
 import { config } from "dotenv";
 import express, { Application, NextFunction, Request, Response } from "express";
+import { graphqlHTTP } from "express-graphql";
+import { GraphQLSchema } from "graphql";
+import helmet from "helmet";
 import createHttpError from "http-errors";
-import router from "./routes/index";
+import { Mutation } from "./graphql/mutation";
+import { RootQuery } from "./graphql/query";
 
 config();
 
 const app: Application = express();
 
-app.all("/*", (request, response, next) => {
-  // Allow cross-origin api requests
-  response.header("Access-Control-Allow-Origin", "*");
-  response.header("Access-Control-Allow-Headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With, X-Auth-Token");
-  response.header("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS, DELETE");
-  return next();
-});
+app.use(cors());
 
 // Parse URL-encoded bodies (as sent by HTML forms)
 app.use(express.urlencoded({ extended: true }));
@@ -23,17 +22,20 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-app.get("/", (req: Request, res: Response, next: NextFunction) => {
-  res.send("Express server with TypeScript");
+// Use Graphql
+const schema = new GraphQLSchema({
+  query: RootQuery,
+  mutation: Mutation,
 });
 
-/* Routes */
-app.use("/jobs", router);
+app.use("/graphql", graphqlHTTP({ schema, graphiql: process.env.NODE_ENV !== "production" }));
 
 /* Catch 404 and forward to error handler */
 app.use((req, res, next) => {
   next(createHttpError(404));
 });
+
+app.use(helmet);
 
 /* Errors */
 app.use((error: any, request: Request, response: Response, next: NextFunction) => {

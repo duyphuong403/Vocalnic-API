@@ -1,32 +1,25 @@
-import { Client } from "pg";
 import { config } from "dotenv";
+import pgPromise from "pg-promise";
 
 config();
 
-export const client = new Client({
+const pgp = pgPromise({});
+
+const DBconfig = {
   user: process.env.DB_USERNAME,
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: parseInt(process.env.DB_PORT || "5432"),
-});
+};
 
-const createTableQuery = `
-CREATE TABLE IF NOT EXISTS "jobs" (
-  "id" SERIAL NOT NULL PRIMARY KEY,
-  "title" VARCHAR(255) NOT NULL,
-  "description" VARCHAR(255) NOT NULL,
-  "expiry" DATE,
-  "created_at" DATE NOT NULL,
-  "updated_at" DATE
-);
-`;
+export const db = pgp(DBconfig);
 
-client.connect();
-
-client
-  .query(createTableQuery)
-  .catch((error) => {
-    console.log(error);
-  })
-  .finally(() => client.end);
+db.none(`CREATE TABLE IF NOT EXISTS jobs (
+  id SERIAL NOT NULL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  expiry TIMESTAMP,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP
+);`);

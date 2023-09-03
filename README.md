@@ -2,16 +2,21 @@
 
 ## Prerequisites:
 
-You must install NodeJS and NPM
+You must install NodeJS and NPM and PostgreSQL
 
 ## Installing:
 
-- using `npm install` or `yarn` to install the libraries
+- using `yarn` to install the libraries
 
-- create the `.env` file and define:
+- create the `.env` file and define below constants, for example:
 
-* API_PORT: the port that the server will run on
+* PORT=3000
+* DB_USERNAME=postgres
+* DB_HOST=localhost
+* DB_NAME=volcanic-server
+* DB_PASSWORD=1234
+* DB_PORT=5432
 
 ## Running:
 
-using `yarn start` to run
+using `yarn dev` to run development environment.
