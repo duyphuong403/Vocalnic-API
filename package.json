@@ -5,18 +5,10 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon ./src/app.ts",
-    "start": "node ./dist/app.ts"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/duyphuong403/Volcanic-API.git"
+    "start": "node ./dist/app.js"
   },
   "author": "Phuong Ngo",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/duyphuong403/Volcanic-API/issues"
-  },
-  "homepage": "https://github.com/duyphuong403/Volcanic-API#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -38,5 +30,6 @@
     "graphql": "^16.8.0",
     "prettier": "^2.8.7",
     "typescript": "^5.2.2"
-  }
+  },
+  "packageManager": "yarn@3.6.3"
 }
